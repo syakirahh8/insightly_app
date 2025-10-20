@@ -43,8 +43,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     // navigate to homescreen after 3 seconds
     Future.delayed(Duration(seconds: 3), () {
-      // TODO: defining all routes for each screens
-      // Get.offAllNamed(Route.HOME)
+      // Get.offAllNamed(Routes);
     });
   }
 
@@ -83,7 +82,33 @@ class _SplashScreenState extends State<SplashScreen>
                         )
                         ]
                       ),
-                      // TODO: ICONS NEWS PAPER PUT HERE
+                      child: Icon(
+                        Icons.newspaper,
+                        size: 60,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    Text(
+                      'News App',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 1.5
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Stay Updated with Latest News',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white.withValues(alpha: 0.8)
+                      ),
+                    ),
+                    SizedBox(height: 50),
+                    CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     )
                   ],
                 ),
