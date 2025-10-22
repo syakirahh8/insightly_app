@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:news_app/utils/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,27 +23,27 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this
     );
 
-    _fadeAnimation = Tween<double> (
+    _fadeAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0
     ).animate(CurvedAnimation(
       parent: _animationController,
-      curve: Curves.easeInOut
+      curve: Curves.easeInOut,
     ));
 
     _scaleAnimation = Tween<double>(
-      begin: 0.5,
+      begin: 0.0,
       end: 1.0
     ).animate(CurvedAnimation(
       parent: _animationController,
-      curve: Curves.elasticInOut
+      curve: Curves.elasticInOut,
     ));
 
     _animationController.forward();
 
-    // navigate to homescreen after 3 seconds
+    // navigate to home screen after 3 second
     Future.delayed(Duration(seconds: 3), () {
-      // Get.offAllNamed(Routes);
+      // Get.offAllNamed(Routes)
     });
   }
 
@@ -74,11 +75,11 @@ class _SplashScreenState extends State<SplashScreen>
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.2),
-                          blurRadius: 20,
-                          offset: Offset(0, 10)
-                        )
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.2),
+                            blurRadius: 20,
+                            offset: Offset(0, 10)
+                          )
                         ]
                       ),
                       child: Icon(
@@ -90,30 +91,30 @@ class _SplashScreenState extends State<SplashScreen>
                     SizedBox(height: 30),
                     Text(
                       'News App',
-                      style: TextStyle(
+                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        letterSpacing: 1.5
+                        letterSpacing: 1.5,
                       ),
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'Stay Updated with Latest News',
+                       'Stay Updated with Latest News',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.white.withValues(alpha: 0.8)
+                        color: Colors.white.withValues( alpha: 0.8),
                       ),
                     ),
                     SizedBox(height: 50),
                     CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    )
+                    ),
                   ],
                 ),
               ),
             );
-          }
+          },
         ),
       ),
     );
