@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:news_app/bindings/app_bindings.dart';
-import 'package:news_app/routes/app_pages.dart';
-import 'package:news_app/utils/app_colors.dart';
+import 'package:insightly_app/bindings/app_bindings.dart';
+import 'package:insightly_app/routes/app_pages.dart';
+import 'package:insightly_app/utils/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,11 +11,11 @@ void main() async {
   // load environtment variables first before running the app
   await dotenv.load(fileName: '.env');
 
-  runApp(NewsApp());
+  runApp(InsightlyApp());
 }
 
-class NewsApp extends StatelessWidget {
-  const NewsApp({super.key});
+class InsightlyApp extends StatelessWidget {
+  const InsightlyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

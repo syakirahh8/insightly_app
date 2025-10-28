@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:news_app/models/news_response.dart';
-import 'package:news_app/utils/constants.dart';
+import 'package:insightly_app/models/news_response.dart';
+import 'package:insightly_app/utils/constants.dart';
 // mendefinisikan sebuah package/library menjadi sebuah variable secara langsung
 import 'package:http/http.dart' as http;
 

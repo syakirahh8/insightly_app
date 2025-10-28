@@ -1,4 +1,4 @@
-import 'package:news_app/models/news_articles.dart';
+import 'package:insightly_app/models/news_articles.dart';
 
 class NewsResponse {
   final String status;
