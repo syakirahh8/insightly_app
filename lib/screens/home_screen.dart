@@ -13,21 +13,76 @@ class HomeScreen extends GetView<NewsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background, // ✅ background utama hitam
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        title: Text(
-          'News App',
-          style: TextStyle(color: AppColors.textPrimary),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search, color: AppColors.textPrimary),
-            onPressed: () => showSearchDialog(context),
+      backgroundColor: AppColors.background,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(88),
+        child: Container(
+          color: AppColors.background,
+          padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
+          child: SafeArea(
+            bottom: false,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Hello!',
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 13,
+                        letterSpacing: 0.2,
+                        height: 1.1,
+                      ),
+                    ),
+                     SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Text(
+                          "Today's ",
+                          style: TextStyle(
+                            color: AppColors.textPrimary,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'Manrope',
+                            letterSpacing: 0.2,
+                            height: 1.1,
+                          ),
+                        ),
+                        Text(
+                          'Insight',
+                          style: TextStyle(
+                            color: AppColors.primary,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                            fontFamily: 'Manrope',
+                            letterSpacing: 0.2,
+                            height: 1.1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                IconButton(
+                  onPressed: () => showSearchDialog(context),
+                  icon: Icon(Icons.search, size: 22),
+                  color: AppColors.textPrimary,
+                  padding: EdgeInsets.all(8),
+                  constraints: BoxConstraints(
+                    minWidth: 40,
+                    minHeight: 40,
+                  ),
+                  splashRadius: 22,
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
+
       body: Column(
         children: [
           // categories
@@ -40,11 +95,13 @@ class HomeScreen extends GetView<NewsController> {
               itemCount: controller.categories.length,
               itemBuilder: (context, index) {
                 final category = controller.categories[index];
-                return Obx(() => CategoryChip(
-                      label: category.capitalize ?? category,
-                      isSelected: controller.selectedCategory == category,
-                      onTap: () => controller.selectCategory(category),
-                    ));
+                return Obx(
+                  () => CategoryChip(
+                    label: category.capitalize ?? category,
+                    isSelected: controller.selectedCategory == category,
+                    onTap: () => controller.selectCategory(category),
+                  ),
+                );
               },
             ),
           ),
@@ -66,7 +123,7 @@ class HomeScreen extends GetView<NewsController> {
               return RefreshIndicator(
                 onRefresh: controller.refreshNews,
                 child: Container(
-                  color: AppColors.background, // ✅ list bg hitam juga
+                  color: AppColors.background,
                   child: ListView.builder(
                     padding: EdgeInsets.all(16),
                     itemCount: controller.articles.length,
@@ -74,17 +131,15 @@ class HomeScreen extends GetView<NewsController> {
                       final article = controller.articles[index];
                       return NewsCard(
                         article: article,
-                        onTap: () => Get.toNamed(
-                          Routes.NEWS_DETAIL,
-                          arguments: article,
-                        ),
+                        onTap: () =>
+                            Get.toNamed(Routes.NEWS_DETAIL, arguments: article),
                       );
                     },
                   ),
                 ),
               );
             }),
-          )
+          ),
         ],
       ),
     );
@@ -115,10 +170,8 @@ class HomeScreen extends GetView<NewsController> {
             SizedBox(height: 8),
             Text(
               'Try refreshing the page',
-              style: TextStyle(
-                color: AppColors.textSecondary,
-              ),
-            )
+              style: TextStyle(color: AppColors.textSecondary),
+            ),
           ],
         ),
       ),
@@ -132,11 +185,7 @@ class HomeScreen extends GetView<NewsController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: AppColors.error,
-            ),
+            Icon(Icons.error_outline, size: 64, color: AppColors.error),
             SizedBox(height: 16),
             Text(
               'Something went wrong',
@@ -149,9 +198,7 @@ class HomeScreen extends GetView<NewsController> {
             SizedBox(height: 8),
             Text(
               'Please check your internet connection',
-              style: TextStyle(
-                color: AppColors.textSecondary,
-              ),
+              style: TextStyle(color: AppColors.textSecondary),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24),
@@ -166,7 +213,7 @@ class HomeScreen extends GetView<NewsController> {
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
               child: Text('Retry'),
-            )
+            ),
           ],
         ),
       ),

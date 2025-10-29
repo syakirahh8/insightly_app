@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 .fadeOut(duration: 700.ms, curve: Curves.easeInCubic),
              SizedBox(height: 10),
             Transform.translate(
-              offset: const Offset(0, -130),
+              offset: Offset(0, -140),
               child: Text(
                 'Fast News, Deeper Insight.',
                 style: TextStyle(
