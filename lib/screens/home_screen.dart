@@ -153,7 +153,7 @@ class HomeScreen extends GetView<NewsController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/maskot internet.png',
+              'assets/images/internet-mascot.png',
               width: 120,
               height: 120,
               fit: BoxFit.contain,
