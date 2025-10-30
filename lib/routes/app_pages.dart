@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:insightly_app/bindings/home_bindings.dart';
 import 'package:insightly_app/screens/home_screen.dart';
 import 'package:insightly_app/screens/news_detail_screen.dart';
+import 'package:insightly_app/screens/profile_screen.dart';
 import 'package:insightly_app/screens/splash_screen.dart';
 
 part 'app_routes.dart';
@@ -24,6 +25,10 @@ class AppPages {
     GetPage(
       name: _Paths.NEWS_DETAIL,
       page: () => NewsDetailScreen(),
-    )
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => ProfileScreen(),
+    ),
   ];
 }

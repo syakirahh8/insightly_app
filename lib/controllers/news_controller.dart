@@ -64,7 +64,7 @@ class NewsController extends GetxController {
 
   Future<void> searchNews(String query) async {
     if (query.isEmpty) return;
-
+    
     try {
       _isLoading.value = true;
       _error.value = '';

@@ -22,6 +22,7 @@ class InsightlyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'News App',
       theme: ThemeData(
+        fontFamily: 'Manrope',
         primarySwatch: Colors.blue,
         primaryColor: AppColors.primary,
         scaffoldBackgroundColor: Colors.white,

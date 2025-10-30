@@ -19,14 +19,12 @@ class NewsDetailScreen extends StatelessWidget {
         ? timeago.format(DateTime.parse(article.publishedAt!))
         : '';
 
-    // 👉 judul hanya di panel bawah (bukan overlay gambar)
-    const bool kShowBodyTitle = true;
+    const bool ShowBodyTitle = true;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         slivers: [
-          // ======= HEADER (gambar + overlay meta saja) =======
           SliverAppBar(
             expandedHeight: 320,
             pinned: true,
@@ -75,7 +73,6 @@ class NewsDetailScreen extends StatelessWidget {
                           ),
                         ),
 
-                  // gradient tipis di atas agar status bar/action kontras
                   Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -98,10 +95,9 @@ class NewsDetailScreen extends StatelessWidget {
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.black87,
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                // color: Colors.white.withValues(alpha: 0.62),
+                                color: Colors.white.withValues(alpha: 0.62),
                               ),
                             ),
                             child: Text(
@@ -114,12 +110,9 @@ class NewsDetailScreen extends StatelessWidget {
                             ),
                           ),
                         if (published.isNotEmpty) ...[
-                         SizedBox(width: 8),
-                         Text(
-                            '•',
-                            style: TextStyle(color: Colors.white54),
-                          ),
-                         SizedBox(width: 8),
+                          SizedBox(width: 8),
+                          Text('•', style: TextStyle(color: Colors.white54)),
+                          SizedBox(width: 8),
                           Text(
                             published,
                             style: TextStyle(
@@ -188,28 +181,23 @@ class NewsDetailScreen extends StatelessWidget {
                 ],
                 icon: Icon(Icons.more_vert),
               ),
-             SizedBox(width: 6),
+              SizedBox(width: 6),
             ],
           ),
 
-          // ======= BODY PANEL (gelap, isi sampai bawah) =======
           SliverFillRemaining(
-            // 👉 agar panel mengisi sisa tinggi sampai bawah
             hasScrollBody: false,
             child: Container(
               decoration: BoxDecoration(
                 color: Color(0xFF151515),
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(24),
-                ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                 border: Border.all(color: AppColors.divider, width: 1),
               ),
               padding: EdgeInsets.fromLTRB(16, 18, 16, 28),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 👉 JUDUL UTAMA DI PANEL (bukan di gambar)
-                  if (kShowBodyTitle && (article.title ?? '').isNotEmpty) ...[
+                  if (ShowBodyTitle && (article.title ?? '').isNotEmpty) ...[
                     Text(
                       article.title!,
                       style: TextStyle(
@@ -219,7 +207,7 @@ class NewsDetailScreen extends StatelessWidget {
                         height: 1.3,
                       ),
                     ),
-                   SizedBox(height: 14),
+                    SizedBox(height: 14),
                   ],
 
                   //description
@@ -233,11 +221,11 @@ class NewsDetailScreen extends StatelessWidget {
                       ),
                     ),
                   ],
-                 SizedBox(height: 18),
+                  SizedBox(height: 18),
 
                   //content
                   if (article.content != null) ...[
-                   Text(
+                    Text(
                       'content',
                       style: TextStyle(
                         fontSize: 16,
@@ -245,7 +233,7 @@ class NewsDetailScreen extends StatelessWidget {
                         color: AppColors.textPrimary,
                       ),
                     ),
-                   SizedBox(height: 6),
+                    SizedBox(height: 6),
                     Text(
                       article.content!,
                       style: TextStyle(
@@ -254,11 +242,10 @@ class NewsDetailScreen extends StatelessWidget {
                         height: 1.6,
                       ),
                     ),
-                   SizedBox(height: 22),
+                    SizedBox(height: 22),
                   ],
-
-                  // Spacer agar tombol tetap di bawah ketika konten pendek
-                 Spacer(),
+                  // button nya biar ttp dibawah
+                  Spacer(),
 
                   // Read full article button
                   if (article.url != null) ...[
@@ -306,7 +293,6 @@ class NewsDetailScreen extends StatelessWidget {
   void _copyLink() {
     if (article.url != null) {
       Clipboard.setData(ClipboardData(text: article.url!));
-      // 👉 snackbar minimalis (clean)
       Get.snackbar(
         'Link Copied',
         'URL saved to clipboard',
@@ -315,7 +301,7 @@ class NewsDetailScreen extends StatelessWidget {
         colorText: Colors.white,
         margin: EdgeInsets.all(12),
         borderRadius: 12,
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 3),
         icon: Icon(Icons.check_circle, color: Colors.white70),
         snackStyle: SnackStyle.FLOATING,
       );
@@ -335,7 +321,15 @@ class NewsDetailScreen extends StatelessWidget {
           'Error',
           "couldn't open the link",
           snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color(0xFF1A1A1A),
+          colorText: Colors.white,
+          margin: EdgeInsets.all(12),
+          borderRadius: 12,
+          duration: Duration(seconds: 3),
+          icon: Icon(Icons.error_outline_rounded, color: Colors.white70),
+          snackStyle: SnackStyle.FLOATING,
         );
+        HapticFeedback.lightImpact();
       }
     }
   }
