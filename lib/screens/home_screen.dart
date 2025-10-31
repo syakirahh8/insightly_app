@@ -1,10 +1,8 @@
-// A brand new way for make a screen using get state management
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:insightly_app/controllers/news_controller.dart';
 import 'package:insightly_app/routes/app_pages.dart';
-import 'package:insightly_app/screens/profile_screen.dart';
+import 'package:insightly_app/screens/favorite_news_screen.dart';
 import 'package:insightly_app/utils/app_colors.dart';
 import 'package:insightly_app/widgets/category_chip.dart';
 import 'package:insightly_app/widgets/loading_shimmer.dart';
@@ -15,79 +13,89 @@ class HomeScreen extends GetView<NewsController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(88),
-        child: Container(
-          color: AppColors.background,
-          padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
-          child: SafeArea(
-            bottom: false,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Hello!',
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 13,
-                        letterSpacing: 0.2,
-                        height: 1.1,
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Row(
+    return Obx(() {
+      final isHome = _navIndex.value == 0;
+
+      return Scaffold(
+        backgroundColor: AppColors.background,
+
+        // appBar hanya muncul di halaman Home
+        appBar: isHome
+            ? PreferredSize(
+                preferredSize: Size.fromHeight(88),
+                child: Container(
+                  color: AppColors.background,
+                  padding: EdgeInsets.all(16),
+                  child: SafeArea(
+                    bottom: false,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Today's ",
-                          style: TextStyle(
-                            color: AppColors.textPrimary,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0.2,
-                            height: 1.1,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'Hello!',
+                              style: TextStyle(
+                                color: AppColors.textSecondary,
+                                fontSize: 13,
+                                letterSpacing: 0.2,
+                                height: 1.1,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Text(
+                                  "Today's ",
+                                  style: TextStyle(
+                                    color: AppColors.textPrimary,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.2,
+                                    height: 1.1,
+                                  ),
+                                ),
+                                Text(
+                                  'Insight',
+                                  style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 0.2,
+                                    height: 1.1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Insight',
-                          style: TextStyle(
-                            color: AppColors.primary,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 0.2,
-                            height: 1.1,
+                        IconButton(
+                          onPressed: () => showSearchDialog(context),
+                          icon: Icon(Icons.search, size: 22),
+                          color: AppColors.textPrimary,
+                          padding: EdgeInsets.all(8),
+                          constraints: BoxConstraints(
+                            minWidth: 40,
+                            minHeight: 40,
                           ),
+                          splashRadius: 22,
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-                IconButton(
-                  onPressed: () => showSearchDialog(context),
-                  icon: Icon(Icons.search, size: 22),
-                  color: AppColors.textPrimary,
-                  padding: EdgeInsets.all(8),
-                  constraints: BoxConstraints(minWidth: 40, minHeight: 40),
-                  splashRadius: 22,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+              )
+            : null,
 
-      body: Obx( // indesxedstack buat pindah halaman tanpa controller
-        () => IndexedStack(
+        // body
+        body: IndexedStack(
           index: _navIndex.value,
           children: [
+            // tab home = 0
             Column(
               children: [
-                // categories
                 Container(
                   height: 60,
                   color: AppColors.background,
@@ -111,50 +119,37 @@ class HomeScreen extends GetView<NewsController> {
                 // news list
                 Expanded(
                   child: Obx(() {
-                    if (controller.isLoading) {
-                      return LoadingShimmer();
-                    }
-                    if (controller.error.isNotEmpty) {
-                      return _buildErrorWidget();
-                    }
-
-                    if (controller.articles.isEmpty) {
-                      return _buildEmptyWidget();
-                    }
+                    if (controller.isLoading) return LoadingShimmer();
+                    if (controller.error.isNotEmpty) return _buildErrorWidget();
+                    if (controller.articles.isEmpty) return _buildEmptyWidget();
 
                     return RefreshIndicator(
                       onRefresh: controller.refreshNews,
-                      child: Container(
-                        color: AppColors.background,
-                        child: ListView.builder(
-                          padding: EdgeInsets.all(16),
-                          itemCount: controller.articles.length,
-                          itemBuilder: (context, index) {
-                            final article = controller.articles[index];
-                            return NewsCard(
-                              article: article,
-                              onTap: () => Get.toNamed(
-                                Routes.NEWS_DETAIL,
-                                arguments: article,
-                              ),
-                            );
-                          },
-                        ),
+                      child: ListView.builder(
+                        padding: EdgeInsets.all(16),
+                        itemCount: controller.articles.length,
+                        itemBuilder: (context, index) {
+                          final article = controller.articles[index];
+                          return NewsCard(
+                            article: article,
+                            onTap: () => Get.toNamed(
+                              Routes.NEWS_DETAIL,
+                              arguments: article,
+                            ),
+                          );
+                        },
                       ),
                     );
                   }),
                 ),
               ],
             ),
-
-            ProfileScreen(),
+            FavoriteNewsScreen(),
           ],
         ),
-      ),
 
-      // Bottom Navbr
-      bottomNavigationBar: Obx(
-        () => SafeArea(
+        // === BOTTOM NAVIGATION ===
+        bottomNavigationBar: SafeArea(
           top: false,
           child: Container(
             margin: EdgeInsets.fromLTRB(16, 0, 16, 12),
@@ -175,10 +170,7 @@ class HomeScreen extends GetView<NewsController> {
               borderRadius: BorderRadius.circular(12),
               child: BottomNavigationBar(
                 currentIndex: _navIndex.value,
-                onTap: (i) {
-                  // highlight pindah Logic navigasi sengaja tidak diubah.
-                  _navIndex.value = i;
-                },
+                onTap: (i) => _navIndex.value = i,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 type: BottomNavigationBarType.fixed,
@@ -192,16 +184,16 @@ class HomeScreen extends GetView<NewsController> {
                     label: 'Home',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.person_rounded),
-                    label: 'Profile',
+                    icon: Icon(Icons.favorite_rounded),
+                    label: 'Favorites',
                   ),
                 ],
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildEmptyWidget() {

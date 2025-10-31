@@ -6,6 +6,7 @@ import 'package:insightly_app/models/news_articles.dart';
 import 'package:insightly_app/utils/app_colors.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:insightly_app/controllers/news_controller.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class NewsDetailScreen extends StatelessWidget {
@@ -129,6 +130,26 @@ class NewsDetailScreen extends StatelessWidget {
             ),
 
             actions: [
+              Obx(() {
+                final c = Get.find<NewsController>();
+                final isFav = c.isFavorite(
+                  article,
+                ); // pastikan NewsController punya isFavorite()
+
+                return IconButton(
+                  icon: Icon(
+                    isFav
+                        ? Icons.favorite_rounded
+                        : Icons.favorite_border_rounded,
+                    color: isFav ? Colors.redAccent : Colors.white,
+                  ),
+                  tooltip: isFav ? 'Remove from Favorites' : 'Add to Favorites',
+                  onPressed: () => c.toggleFavorite(
+                    article,
+                  ), // toggleFavorite()
+                );
+              }),
+
               IconButton(
                 icon: Icon(Icons.share),
                 onPressed: () => _shareArticle(),
@@ -247,7 +268,7 @@ class NewsDetailScreen extends StatelessWidget {
                   // button nya biar ttp dibawah
                   Spacer(),
 
-                  // Read full article button
+                  // button
                   if (article.url != null) ...[
                     SizedBox(
                       width: double.infinity,

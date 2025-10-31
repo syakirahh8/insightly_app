@@ -54,7 +54,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 'Fast News, Deeper Insight.',
                 style: TextStyle(
                   fontSize: 20,
-                  fontFamily: 'Manrope',
                   color: Colors.white.withValues(alpha: 0.8),
                 ),
               )
@@ -65,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             // LOADING
             CircularProgressIndicator(
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
               strokeWidth: 2.5,
             )
                 .animate()

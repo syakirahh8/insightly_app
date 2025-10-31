@@ -9,9 +9,12 @@ class NewsController extends GetxController {
 
   // setter
   // observable variables (variable yang bisa berubah)
-  final _isLoading = false.obs; // apakah aplikasi sedang membuat berita dan nilainya adalah
-  final _articles = <NewsArticles>[].obs; // ini untuk menampilkan data berita yang sudah berhasil didapat.
-  final _selectedCategory = 'general'.obs; // untuk handle category yang sedang dipilih (atau yang akan muncul di home screen)
+  final _isLoading =
+      false.obs; // apakah aplikasi sedang membuat berita dan nilainya adalah
+  final _articles = <NewsArticles>[]
+      .obs; // ini untuk menampilkan data berita yang sudah berhasil didapat.
+  final _selectedCategory = 'general'
+      .obs; // untuk handle category yang sedang dipilih (atau yang akan muncul di home screen)
   final _error = ''.obs; // kalau ada kesalahan pesan error akan disimpan disini
 
   // Getters
@@ -23,7 +26,7 @@ class NewsController extends GetxController {
   String get error => _error.value;
   List<String> get categories => Constants.categories;
 
-  // begitu aplikasi dibuka, aplikasi langsung menampilkan berita utama 
+  // begitu aplikasi dibuka, aplikasi langsung menampilkan berita utama
   // dari endpoint top-headline
   // TODO: Fetching data dari endpoint top-headlines
 
@@ -64,7 +67,7 @@ class NewsController extends GetxController {
 
   Future<void> searchNews(String query) async {
     if (query.isEmpty) return;
-    
+
     try {
       _isLoading.value = true;
       _error.value = '';
@@ -76,10 +79,28 @@ class NewsController extends GetxController {
       Get.snackbar(
         'Error',
         'Failed to search news: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM
+        snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
       _isLoading.value = false;
     }
   }
+
+  // loved
+  final RxList<NewsArticles> favorites = <NewsArticles>[].obs;
+
+  bool isFavorite(NewsArticles a) =>
+      favorites.any((x) => _keyOf(x) == _keyOf(a));
+
+  void toggleFavorite(NewsArticles a) {
+    final i = favorites.indexWhere((x) => _keyOf(x) == _keyOf(a));
+    if (i >= 0) {
+      favorites.removeAt(i);
+    } else {
+      favorites.add(a);
+    }
+  }
+
+  String _keyOf(NewsArticles a) =>
+      '${a.url ?? ''}|${a.title ?? ''}|${a.publishedAt ?? ''}';
 }
